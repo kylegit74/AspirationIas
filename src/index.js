@@ -1,19 +1,26 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import Connection from './Configs/DbConfig.js';
 import ApiRouter from './Routers/Version/ApiRouter.js';
-import cors from 'cors';
 
-// Load environment variables
 dotenv.config();
 
 const app = express();
 
-// Set CORS dynamically
+const allowedOrigins = [
+    "http://localhost:3000",  // Development
+    "https://aspritaionias.vercel.app"  // Correct Vercel URL
+];
+
 app.use(cors({
-    origin: process.env.NODE_ENV === 'production' 
-        ? 'https://aspirationias.vercel.app'  // ✅ Vercel URL
-        : 'http://localhost:3000',  // ✅ Localhost for Development
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -31,6 +38,6 @@ app.get('/', (req, res) => {
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
-    console.log(`🚀 Server is running on ${process.env.NODE_ENV === 'production' ? 'https://aspirationias.vercel.app' : 'http://localhost:3000'} (ENV: ${process.env.NODE_ENV})`);
+    console.log(`🚀 Server is running on ${PORT} (${process.env.NODE_ENV})`);
     Connection();
 });
