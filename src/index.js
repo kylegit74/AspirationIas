@@ -1,31 +1,36 @@
-import express, { urlencoded } from 'express';
-import dotenv from 'dotenv'
+import express from 'express';
+import dotenv from 'dotenv';
 import Connection from './Configs/DbConfig.js';
 import ApiRouter from './Routers/Version/ApiRouter.js';
-import cors from 'cors'
+import cors from 'cors';
 
+// Load environment variables
 dotenv.config();
 
+const app = express();
 
-const app = express(); 
+// Set CORS dynamically
 app.use(cors({
-    origin: ['https://aspritaionias.vercel.app'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],  
-    allowedHeaders: ['Content-Type', 'Authorization'] 
+    origin: process.env.NODE_ENV === 'production' 
+        ? 'https://aspirationias.vercel.app'  // ✅ Vercel URL
+        : 'http://localhost:3000',  // ✅ Localhost for Development
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json());
-app.use(express.urlencoded({extended:true})) 
+app.use(express.urlencoded({ extended: true }));
 
-app.use('/api',ApiRouter);
+app.use('/api', ApiRouter);
 
 app.get('/', (req, res) => {
-    res.send("Hello");
+    res.send("Hello, World! Your app is running in " + process.env.NODE_ENV);
 });
 
+// Ensure PORT is set
+const PORT = process.env.PORT || 8000;
 
-app.listen(process.env.PORT, () => {
-    console.log(`Server is running on http://localhost:${process.env.PORT}`);
+app.listen(PORT, () => {
+    console.log(`🚀 Server is running on ${process.env.NODE_ENV === 'production' ? 'https://aspirationias.vercel.app' : 'http://localhost:3000'} (ENV: ${process.env.NODE_ENV})`);
     Connection();
 });
-
