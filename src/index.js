@@ -9,7 +9,7 @@ dotenv.config();
 
 const app = express(); 
 app.use(cors({
-    origin: ['http://localhost:3000', 'https://aspiration-ias.vercel.app'],
+    origin: ['https://aspiration-ias.vercel.app'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],  
     allowedHeaders: ['Content-Type', 'Authorization'] 
 }));
