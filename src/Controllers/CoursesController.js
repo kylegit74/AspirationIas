@@ -197,6 +197,7 @@ export const EditCourseByidController=async(req,res)=>{
         const updated=await CourseModel.findByIdAndUpdate(id, {image:imageurl,heading:heading,description:description,Explore_Courses:Explore_Courses},{new:true});
        
         await fs.unlink(req.file.path);
+        
         if(!updated)
         {
             return res.status(401).json({
