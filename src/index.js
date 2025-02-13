@@ -9,7 +9,7 @@ dotenv.config();
 
 const app = express(); 
 app.use(cors({
-    origin: ['https://aspiration-ias.vercel.app'],
+    origin: ['https://aspritaionias.vercel.app'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],  
     allowedHeaders: ['Content-Type', 'Authorization'] 
 }));
