@@ -6,5 +6,5 @@ NoticeRouter.get('/getallnotice',GetallNoticeController);
 NoticeRouter.get('/getnotice/:id',GetNoticeByIdController);
 NoticeRouter.delete('/delete/:id',DeleteNoticeByIdController);
 NoticeRouter.put('/edit/:id',EditNoticeController);
-NoticeRouter.put('/edit-order',EditOrder);
+NoticeRouter.post('/edit-order',EditOrder);
 export default NoticeRouter;
