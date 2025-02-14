@@ -215,7 +215,7 @@ export const EditCourseByidController=async(req,res)=>{
     {
         console.log(error)
         return res.status(501).json({
-            message:'Internal server error',
+            message:'Internal server errors',
             success:true
         })
     }
