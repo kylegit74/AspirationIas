@@ -8,6 +8,7 @@ const unlinkAsync = promisify(fs.unlink);
 
 export const CreateBannerController = async (req, res) => {
     try {
+        const {link}=req.body;
         if (!req.file) {
             return res.status(400).json({
                 message: 'No file uploaded',
@@ -23,7 +24,7 @@ export const CreateBannerController = async (req, res) => {
         // Delete file from local storage
         await unlinkAsync(req.file.path); 
 
-        const created = await CreateBannerService({ image: uploaded.secure_url }); 
+        const created = await CreateBannerService({ image: uploaded.secure_url , link:link}); 
 
         if (created) {
             return res.status(200).json({
@@ -101,6 +102,7 @@ export const GetAllBannerController=async(req, res)=>{
 export const EditBannerController=async(req,res)=>{
     try{
         const id=req.params.id;
+        const {link}=req.body;
         if(!id)
         {
             return res.status(401).json({
@@ -133,7 +135,8 @@ export const EditBannerController=async(req,res)=>{
         fs.unlinkSync(req.file.path);
         const updated = await BannerModel.findByIdAndUpdate(
             ExistingBanner._id, 
-            { image: uploaded.secure_url }, 
+            { image: uploaded.secure_url },
+            {link:link} ,
             { new: true } 
         );
         

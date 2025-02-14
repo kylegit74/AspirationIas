@@ -213,7 +213,7 @@ export const EditCourseByidController=async(req,res)=>{
 
     }catch(error)
     {
-        console.log('error',error)
+        console.log(error)
         return res.status(501).json({
             message:'Internal server error',
             success:true

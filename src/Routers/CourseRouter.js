@@ -7,5 +7,6 @@ CourseRouter.post('/create',upload.single('image'),CreateCourseController);
 CourseRouter.get('/getcourse/:id',GetCourseByIdController);
 CourseRouter.get('/getall', GetAllCourseController);
 CourseRouter.delete('/delete/:id',DeleteCourseByIdController);
-CourseRouter.put('/edit/:id',upload.single('image'),EditCourseByidController)
+CourseRouter.put('/edit/:id',upload.single('image'),EditCourseByidController);
+
 export default CourseRouter;

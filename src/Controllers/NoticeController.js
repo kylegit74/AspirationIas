@@ -157,3 +157,24 @@ export const EditNoticeController=async(req,res)=>{
         })
     }
 }
+export const EditOrder=async(req,res)=>{
+  try{
+    const {notices}=req.body;
+    for (let i=0;i<notices.length;i++)
+    {
+      await NoticeModel.findByIdAndUpdate(notices[i]._id,{order:i});
+    }
+    return res.status(201).json({
+      message:'Order updated successfully',
+      success:true
+    });
+
+  }catch(error)
+  {
+    console.log('error',error);
+    return res.status(501).json({
+      message:'Internal server error',
+      success:false
+    });
+  }
+}
