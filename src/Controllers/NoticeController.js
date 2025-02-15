@@ -9,7 +9,7 @@ import {
 
 export const CreateNoticeController = async (req, res) => {
   try {
-    const { text } = req.body;
+    const { text , order} = req.body;
     console.log("text", text);
     if (!text) {
       return res.status(404).json({
@@ -18,7 +18,7 @@ export const CreateNoticeController = async (req, res) => {
       });
     }
 
-    const created = await CreateNoticeService(text);
+    const created = await CreateNoticeService({text, order});
     if (!created) {
       return res.status(401).json({
         message: "Can not create notice",
@@ -157,24 +157,46 @@ export const EditNoticeController=async(req,res)=>{
         })
     }
 }
-export const EditOrder=async(req,res)=>{
-  try{
-    const {notices}=req.body;
-    for (let i=0;i<notices.length;i++)
-    {
-      await NoticeModel.findByIdAndUpdate(notices[i]._id,{order:i});
+export const EditOrder = async (req, res) => {
+  try {
+    const { notices } = req.body;
+
+    if (!Array.isArray(notices)) {
+      return res.status(400).json({
+        message: "Invalid data format: notices must be an array",
+        success: false
+      });
     }
-    return res.status(201).json({
-      message:'Order updated successfully',
-      success:true
+
+    console.log("Received notices:", notices);
+
+    for (let i = 0; i < notices.length; i++) {
+      if (!notices[i]._id) {
+        console.error("Missing _id in notice:", notices[i]);
+        continue;
+      }
+
+      try {
+        const notice = await NoticeModel.findByIdAndUpdate(notices[i]._id, { order: i });
+        if (!notice) {
+          console.error("No notice found with ID:", notices[i]._id);
+        }
+      } catch (dbError) {
+        console.error("Database error:", dbError);
+      }
+    }
+
+    return res.status(200).json({
+      message: "Order updated successfully",
+      success: true
     });
 
-  }catch(error)
-  {
-    console.log(error);
-    return res.status(501).json({
-      message:'Internal server error',
-      success:false
+  } catch (error) {
+    console.error("Internal Server Error:", error);
+    return res.status(500).json({
+      message: "Internal server error",
+      success: false
     });
   }
-}
+};
+

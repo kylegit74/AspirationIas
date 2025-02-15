@@ -1,8 +1,8 @@
 import { CreateNotice, DeleteNoticeById, GetAllNotice, GetNoticeById } from "../Repository/NoticeRepo.js";
 
-export const CreateNoticeService = async (text) => {
+export const CreateNoticeService = async (obj) => {
   try {
-    const created = await CreateNotice(text);
+    const created = await CreateNotice(obj);
     return created;
   } catch (error) {
     return error;

@@ -1,9 +1,9 @@
 import NoticeModel from "../Models/Notice/NoticeBoardModel.js";
 import mongoose from "mongoose";
 
-export const CreateNotice=async(text)=>{
+export const CreateNotice=async(obj)=>{
     try{
-        const created=await NoticeModel.create({text});
+        const created=await NoticeModel.create(obj);
          return created;
 
 
